@@ -13,7 +13,10 @@ function DamageButton() {
     setTimeout(() =>  dispatch(resetFlash()), 200);
   };
 
-  return <button onClick={() => applyDamage(3)}>Damage</button>;
+  return <button onClick={() => applyDamage(3)}
+  style={{
+    zIndex: '999'
+  }}>Damage</button>;
 }
 
 export default DamageButton;

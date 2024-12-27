@@ -1,16 +1,21 @@
+import { useAppSelector } from "@/app/Store/hooks";
+
 interface PlayerDeckProps {
     children: React.ReactNode
 }
 
 function PlayerDeck({children}: PlayerDeckProps){
-
+    const playerDeck = useAppSelector((state) => state.rootReducers.game.playerDeck);
 
     return(
         <div className="playerHand"
         style={{
-            backgroundColor: 'gray',
-            height: '15vh',
-            width: '6vw',
+            backgroundImage: playerDeck.length > 0 ? "url('/Cards/CardBack.png')" : "",
+            backgroundSize: "cover",
+            border: "solid 0.5vh",
+            borderRadius: "1vh",
+            width: "7vw",
+            height: "20vh",
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

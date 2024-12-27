@@ -10,6 +10,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  overflow: hidden;
+  user-select: none;
 }
 
 @media (prefers-color-scheme: dark) {

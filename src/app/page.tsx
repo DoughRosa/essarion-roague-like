@@ -2,8 +2,8 @@
 
 import GameBackground from "./Components/GameArea/GameBackground";
 import PlayerHand from "./Components/GameArea/PlayerHand";
-import PlayerCharacter from "./Components/GameArea/CharacterArea/PlayerCharacter";
-import EnemyArea from "./Components/GameArea/EnemyArea";
+import PlayerCharacter from "./Components/Characters/CharacterArea/PlayerCharacter";
+import EnemyArea from "./Components/Enemies/EnemiesArea/EnemyArea";
 import PlayerDeck from "./Components/GameArea/PlayerDeck";
 import PlayerGrave from "./Components/GameArea/PlayerGrave";
 import { useAppDispatch, useAppSelector } from "./Store/hooks";
@@ -13,12 +13,14 @@ import playerInitialDeck from "./Components/Decks/PlayerInitialDeck";
 import { setPlayerDeck, setPlayerGrave, setPlayerHand } from "./Store/models/gameSlice";
 import EndOfTurnButton from "./Components/GameArea/Buttons/EndOfTurn";
 import CardInterface from "./Interfaces/CardInterface";
-import CharacterImg from "./Components/GameArea/CharacterArea/CharacterImg";
-import HealthBar from "./Components/GameArea/CharacterArea/HealthBar";
+import CharacterImg from "./Components/Characters/CharacterArea/CharacterImg";
+import HealthBar from "./Components/Characters/CharacterArea/HealthBar";
 import DamageButton from "./Components/GameArea/Buttons/DMG";
-import Energy from "./Components/GameArea/CharacterArea/Energy";
+import Energy from "./Components/Characters/CharacterArea/Energy";
 import { Card, card } from "@nextui-org/react";
 import CardComponent from "./Components/Cards/CardComponent";
+import EnemiesImg from "./Components/Enemies/EnemiesArea/EnemiesImg";
+import EnemiesHealthBar from "./Components/Enemies/EnemiesArea/EnemiesHealthBar";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -78,25 +80,38 @@ export default function Home() {
   return (
     <>
     <GameBackground>
+    <DamageButton></DamageButton>
       <PlayerCharacter>
-        <HealthBar/>
         <CharacterImg></CharacterImg>
       </PlayerCharacter>
       <EnemyArea>
-        <h2>ENEMY AREA</h2>
+        <EnemiesImg/>
       </EnemyArea>
-      <PlayerHand>
-        
-      </PlayerHand>
       <PlayerDeck>
-        {playerDeck.length}
+        <div
+        style={{
+          color: "whitesmoke",
+          fontSize: "8vh",
+          fontWeight: "bold",
+          textShadow: "-4px -4px 0 black, 4px -4px 0 black, -4px 4px 0 black, 4px 4px 0 black",
+        }}>
+          {playerDeck.length}
+        </div>
       </PlayerDeck>
       <PlayerGrave>
-        {playerGrave.length}
+      <div
+        style={{
+          color: "whitesmoke",
+          fontSize: "8vh",
+          fontWeight: "bold",
+          textShadow: "-4px -4px 0 black, 4px -4px 0 black, -4px 4px 0 black, 4px 4px 0 black",
+        }}>
+          {playerGrave.length}
+        </div>
       </PlayerGrave>
       <EndOfTurnButton action={handleTurnCycle} label="End Turn"></EndOfTurnButton>
-      <DamageButton></DamageButton>
       <Energy></Energy>
+      <PlayerHand/>
     </GameBackground>
     </>
   );

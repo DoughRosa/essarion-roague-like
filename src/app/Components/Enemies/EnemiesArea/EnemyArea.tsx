@@ -7,14 +7,13 @@ function EnemyArea({children}: EnemyAreaProps){
   return(
     <div className="enemyArea"
     style={{
-      backgroundColor: 'red',
       height: '65vh',
-      width: '25vw',
+      width: '50vw',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'end',
       position: 'absolute',
-      right: '20vw',
+      right: '5vw',
       top: '5vh',
     }}>
       {children}

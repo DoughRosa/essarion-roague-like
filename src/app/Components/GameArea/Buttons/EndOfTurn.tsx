@@ -10,8 +10,8 @@ export default function EndOfTurnButton({label, action}: EndOfTurnProps) {
     <div className="flex flex-wrap gap-4 items-center"
     style={{
       position: 'absolute',
-      top: '65vh',
-      right: '8vw',
+      top: '60vh',
+      right: '5vw',
     }}>
       <Button onPress={action}
       style={{

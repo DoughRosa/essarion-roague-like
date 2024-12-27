@@ -33,6 +33,7 @@ export default function HealthBar() {
             justifyContent: 'center',
             alignItems: 'center',
             fontWeight: 'bolder',
+            fontSize: '2.3vh',
             height: '2vh',
             width: '13vw',
           }}>

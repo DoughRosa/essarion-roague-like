@@ -8,14 +8,14 @@ export default function Energy() {
       <div className="energy"
       style={{
         position: 'absolute',
-        top: '60vh',
-        left: '20vw',
+        top: '50vh',
+        left: '16vw',
         display: 'flex',
         justifyContent: 'center',
         alignItems:'center',
         backgroundColor: 'brown',
-        height: '12vh',
-        width: '12vh',
+        height: '15vh',
+        width: '15vh',
         borderRadius: '100%',
         fontWeight: 'bolder',
         fontSize: '5vh'

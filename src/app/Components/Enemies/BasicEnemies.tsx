@@ -4,7 +4,7 @@ const basicEnemies: EnemyInterface [] = [
     {
         id: 1,
         name: 'Esquelético',
-        img: '',
+        img: '/Enemies/Esqueletico.png',
         initialLife: 15,
         currentLife: 0,
         initialPower: 0,
