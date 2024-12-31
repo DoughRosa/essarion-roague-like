@@ -1,24 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import CharacterInterface from "@/app/Interfaces/CharacterInterface";
 
 interface CharacterState {
+  playerCharacter: CharacterInterface | null,
   characterMaxLife: number,
   characterLife: number,
   characterMaxEnergy: number,
   characterEnergy: number,
   characterPower: number,
   characterShield: number,
-  characterImg: string,
-  isFlashing: boolean
+  img: string,
+  isFlashing: boolean,
+  
 }
 
 const initialState: CharacterState = {
+  playerCharacter: null,
   characterMaxLife: 40,
   characterLife: 40,
   characterMaxEnergy: 3,
   characterEnergy: 3,
   characterPower: 0,
   characterShield: 0,
-  characterImg: '',
+  img: '',
   isFlashing: false
 };
 
@@ -26,6 +30,9 @@ const characterSlice = createSlice({
   name: "character",
   initialState,
   reducers: {
+    setPlayerCharacter: (state, action: PayloadAction<CharacterInterface | null>) => {
+      state.playerCharacter = action.payload;
+  },
     setCharacterMaxLife: (state, action: PayloadAction<number>) => {
       state.characterMaxLife = action.payload;
     },
@@ -45,7 +52,7 @@ const characterSlice = createSlice({
       state.characterShield = action.payload;
     },
     setCharacterImg: (state, action: PayloadAction<string>) => {
-      state.characterImg = action.payload;
+      state.img = action.payload;
     },
     triggerFlash: (state) => {
       state.isFlashing = true;
@@ -57,6 +64,7 @@ const characterSlice = createSlice({
 });
 
 export const {
+  setPlayerCharacter,
   setCharacterMaxLife,
   setCharacterLife,
   setCharacterMaxEnergy,

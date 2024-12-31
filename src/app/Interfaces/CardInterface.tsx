@@ -7,7 +7,7 @@ interface CardInterface {
     rarety: string,
     dmg: number,
     block: number,
-    text: string
+    text: string,
 }
 
 export default CardInterface;

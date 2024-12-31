@@ -1,7 +1,6 @@
-import { useAppDispatch, useAppSelector } from "@/app/Store/hooks";
+import { useAppSelector } from "@/app/Store/hooks";
 import CardComponent from "../Cards/CardComponent";
 import CardInterface from "@/app/Interfaces/CardInterface";
-import { setPlayerHand } from "@/app/Store/models/gameSlice";
 import { useEffect, useState } from "react";
 
 function PlayerHand(){
@@ -37,7 +36,7 @@ function PlayerHand(){
             <div
                 key={card.id}
                 style={{
-                    transition: "transform 0.3s ease-in-out, opacity 0.3s ease-in-out",
+                    transition: "transform 0.3s ease-in-out, opacity 0.5s ease-in-out",
                     opacity: visibleCards.includes(card) ? 1 : 0,
                   }}
               >

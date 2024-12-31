@@ -1,5 +1,5 @@
-import playerInitialDeck from "../Components/Decks/PlayerInitialDeck";
-import CardInterface from "../Interfaces/CardInterface";
+import playerInitialDeck from "../../Components/Decks/PlayerInitialDeck";
+import CardInterface from "../../Interfaces/CardInterface";
 
 export const deckShuffler = (deck: CardInterface[]) => {
   const shuffledDeck = [...deck];

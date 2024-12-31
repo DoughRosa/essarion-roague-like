@@ -10,7 +10,7 @@ interface CharacterInterface {
     currentPower: number,
     initialEnergy: number,
     currentEnergy: number,
-    text: '',
+    text: string,
 }
 
 export default CharacterInterface;

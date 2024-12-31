@@ -9,7 +9,6 @@ interface GameState {
   playerGrave: CardInterface[];
   playerEarnedCard: CardInterface[];
   characterHoster: CharacterInterface[];
-  playerCharacter: CharacterInterface | null;
   enemiesHoster: EnemyInterface[];
   enemiesInScreen: EnemyInterface[];
   enemySelected: EnemyInterface | null; 
@@ -22,7 +21,6 @@ const initialState: GameState = {
   playerGrave: [],
   playerEarnedCard: [],
   characterHoster: [],
-  playerCharacter: null,
   enemiesHoster: [],
   enemiesInScreen: [],
   enemySelected: null,
@@ -48,9 +46,6 @@ const gameSlice = createSlice({
     setCharacterHoster: (state, action: PayloadAction<CharacterInterface[]>) => {
       state.characterHoster = action.payload;
     },
-    setPlayerCharacter: (state, action: PayloadAction<CharacterInterface | null>) => {
-        state.playerCharacter = action.payload;
-    },
     setEnemiesHoster: (state, action: PayloadAction<EnemyInterface[]>) => {
         state.enemiesHoster = action.payload;
     },
@@ -63,7 +58,6 @@ const gameSlice = createSlice({
     setSelectedCard: (state, action: PayloadAction<CardInterface | null>) => {
       state.selectedCard = action.payload;
     },
-    
   },
 });
 
@@ -72,7 +66,6 @@ export const {
   setEnemiesHoster,
   setEnemiesInScreen,
   setEnemySelected,
-  setPlayerCharacter,
   setPlayerDeck,
   setPlayerEarnedCard,
   setPlayerGrave,

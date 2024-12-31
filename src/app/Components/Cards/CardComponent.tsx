@@ -1,50 +1,25 @@
 import CardInterface from "@/app/Interfaces/CardInterface";
+import { setSelectedCard } from "@/app/Store/models/gameSlice";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface CardProps {
     card: CardInterface;
     index: number;
 }
 
-let activeCard: HTMLElement | null = null;
+export default function CardComponent({card}: CardProps) {
 
-function grabCard(e: React.MouseEvent) {
-  const element = e.target as HTMLElement;
-
-  if(element.className === "cardInHand"){
-  
-    const x = e.clientX - 320;
-    const y = e.clientY - 680;
-
-    element.style.position = "absolute";
-    element.style.zIndex = "999";
-    element.style.left = `${x}px`;
-    element.style.top = `${y}px`;
-
-    activeCard = element
-  }
-}
-
-function moveCard(e: React.MouseEvent) {
-  if(activeCard){
-    
-    const x = e.clientX - 320;
-    const y = e.clientY - 680;
-
-
-    activeCard.style.position = "absolute";
-    activeCard.style.zIndex = "999";
-    activeCard.style.left = `${x}px`;
-    activeCard.style.top = `${y}px`;
-  }
-}
-
-function dropCard(e: React.MouseEvent) {
-  activeCard = null;
-}
-
-export default function CardComponent({card, index}: CardProps) {
+  const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleSelectedCard = (card: CardInterface) => {
+    dispatch(setSelectedCard(card))
+  }
+
+  const handleDragStart = (e: React.DragEvent, card: CardInterface) => {
+    e.dataTransfer.setData("cardName", card.name);
+  };
 
   return (
     <div
@@ -71,9 +46,11 @@ export default function CardComponent({card, index}: CardProps) {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onMouseDown={grabCard}
-      onMouseMove={moveCard}
-      onMouseUp={dropCard}
+      onClick={() => handleSelectedCard(card)}
+      onDragStart={() => handleDragStart}
+      onDrag={() => handleSelectedCard(card)}
+      draggable
+      
     >
       <div
         style={{

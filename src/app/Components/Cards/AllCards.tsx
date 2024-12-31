@@ -30,7 +30,7 @@ class Card implements CardInterface {
       this.rarety = data.rarety;
       this.dmg = data.dmg;
       this.block = data.block;
-      this.text = this.generateText(data.textTemplate); // Gera o texto final
+      this.text = this.generateText(data.textTemplate);
     }
   
     private generateText(template: string): string {

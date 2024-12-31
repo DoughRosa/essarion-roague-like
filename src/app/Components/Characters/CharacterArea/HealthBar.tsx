@@ -2,10 +2,12 @@ import { useAppSelector } from "@/app/Store/hooks";
 
 export default function HealthBar() {
 
-    const { characterMaxLife, characterLife } = useAppSelector((state) => state.rootReducers.character);
+  const { playerCharacter, characterLife, characterMaxLife } = useAppSelector((state) => state.rootReducers.character);
 
     const calculateWidth = () => {
+      if(playerCharacter){
         return (characterLife / characterMaxLife) * 100;
+      }
     };
 
   return (
@@ -37,7 +39,7 @@ export default function HealthBar() {
             height: '2vh',
             width: '13vw',
           }}>
-            {characterLife}/{characterMaxLife}
+            {characterLife} / { characterMaxLife }
           </div>
         </div>
       </div>

@@ -1,118 +1,95 @@
 "use client"
 
-import GameBackground from "./Components/GameArea/GameBackground";
-import PlayerHand from "./Components/GameArea/PlayerHand";
-import PlayerCharacter from "./Components/Characters/CharacterArea/PlayerCharacter";
-import EnemyArea from "./Components/Enemies/EnemiesArea/EnemyArea";
-import PlayerDeck from "./Components/GameArea/PlayerDeck";
-import PlayerGrave from "./Components/GameArea/PlayerGrave";
-import { useAppDispatch, useAppSelector } from "./Store/hooks";
-import { useEffect } from "react";
-import { discardCardsEndOfTurn, draw1Card, draw5Cards, handdleDeck, returnGraveToDeck } from "./Functions/DeckManipulation";
-import playerInitialDeck from "./Components/Decks/PlayerInitialDeck";
-import { setPlayerDeck, setPlayerGrave, setPlayerHand } from "./Store/models/gameSlice";
-import EndOfTurnButton from "./Components/GameArea/Buttons/EndOfTurn";
-import CardInterface from "./Interfaces/CardInterface";
-import CharacterImg from "./Components/Characters/CharacterArea/CharacterImg";
-import HealthBar from "./Components/Characters/CharacterArea/HealthBar";
-import DamageButton from "./Components/GameArea/Buttons/DMG";
-import Energy from "./Components/Characters/CharacterArea/Energy";
-import { Card, card } from "@nextui-org/react";
-import CardComponent from "./Components/Cards/CardComponent";
-import EnemiesImg from "./Components/Enemies/EnemiesArea/EnemiesImg";
-import EnemiesHealthBar from "./Components/Enemies/EnemiesArea/EnemiesHealthBar";
+import { useAppDispatch, useAppSelector } from './Store/hooks';
+import { setCharacterImg, setCharacterLife, setPlayerCharacter } from './Store/models/characterSlice';
+import CharacterInterface from './Interfaces/CharacterInterface';
+import listOfCharacters from './Components/Characters/ListOfCharacters';
+import Image from 'next/image';
+import GameBackground from './Components/GameArea/GameBackground';
+import { useState } from 'react';
+import { handdleDeck } from './Functions/GameFunctions/DeckManipulation';
+import { setPlayerDeck } from './Store/models/gameSlice';
 
-export default function Home() {
+export default function CharacterSelectionPage() {
   const dispatch = useAppDispatch();
+  const [hoveredCharacter, setHoveredCharacter] = useState<number | null>(null);
 
   const {
-    playerDeck,
-    playerHand,
-    playerGrave,
-    characterHoster,
-    enemiesHoster,
-    enemiesInScreen,
-    enemySelected,
-    playerCharacter,
-    playerEarnedCard,
-    selectedCard
-  } = useAppSelector((state) => state.rootReducers.game);
+      playerDeck,
+    } = useAppSelector((state) => state.rootReducers.game);
 
-  //-----------INICIA O DECK E COMPRA A MAO INICIAL
-  const deck = handdleDeck(playerDeck);
+    const {
+      characterMaxLife
+    } = useAppSelector((state) => state.rootReducers.character);
 
-  useEffect(() => {
+  const handleSelectCharacter = (character: CharacterInterface) => {
+    dispatch(setPlayerCharacter(character));
+    dispatch(setCharacterImg(character.img));
+    dispatch(setCharacterLife(characterMaxLife))
+
+    const deck = handdleDeck(playerDeck);
+    
     dispatch(setPlayerDeck(deck));
 
-    const { updatedDeck, newHand } = draw5Cards(deck, []);
-    dispatch(setPlayerDeck(updatedDeck));
-    dispatch(setPlayerHand(newHand));
-  }, [dispatch]);
-
-  //------------------INICIO DO TURNO
-  const handleTurnCycle = () => {
-    const { updatedGrave, updatedHand } = discardCardsEndOfTurn(playerHand, playerGrave);
-  
-    dispatch(setPlayerHand(updatedHand));
-    dispatch(setPlayerGrave(updatedGrave));
-
-    let currentHand = updatedHand;
-    let currentDeck = playerDeck;
-    let currentGrave = updatedGrave;
-
-    while(currentHand.length < 5){
-      if(currentDeck.length === 0){
-        const { newGrave, newDeck } = returnGraveToDeck(currentGrave, []);
-        currentDeck = newDeck;
-        currentGrave = newGrave;
-      }  
-
-      const { updatedDeck, updatedHand } = draw1Card(currentDeck, currentHand);
-      currentDeck = updatedDeck;
-      currentHand = updatedHand;
-    }
-
-    dispatch(setPlayerDeck(currentDeck));
-    dispatch(setPlayerHand(currentHand));
-    dispatch(setPlayerGrave(currentGrave));
+    window.open("/act-1");
   };
-    
+
   return (
-    <>
     <GameBackground>
-    <DamageButton></DamageButton>
-      <PlayerCharacter>
-        <CharacterImg></CharacterImg>
-      </PlayerCharacter>
-      <EnemyArea>
-        <EnemiesImg/>
-      </EnemyArea>
-      <PlayerDeck>
-        <div
+      <div style={{
+        position: "absolute",
+        top: "5vh"
+      }}>
+        <Image src={"/Background/Choose.png"}
+        alt="Escolha seu herói"
+        width={1000}
+        height={1000}/>
+      </div>
+      <div className="player-hoster"
         style={{
-          color: "whitesmoke",
-          fontSize: "8vh",
-          fontWeight: "bold",
-          textShadow: "-4px -4px 0 black, 4px -4px 0 black, -4px 4px 0 black, 4px 4px 0 black",
-        }}>
-          {playerDeck.length}
-        </div>
-      </PlayerDeck>
-      <PlayerGrave>
-      <div
-        style={{
-          color: "whitesmoke",
-          fontSize: "8vh",
-          fontWeight: "bold",
-          textShadow: "-4px -4px 0 black, 4px -4px 0 black, -4px 4px 0 black, 4px 4px 0 black",
-        }}>
-          {playerGrave.length}
-        </div>
-      </PlayerGrave>
-      <EndOfTurnButton action={handleTurnCycle} label="End Turn"></EndOfTurnButton>
-      <Energy></Energy>
-      <PlayerHand/>
+            backgroundColor: "rgba(0,0,0,0.3)",
+            height: "33vh",
+            width: "75vw",
+            display: 'flex',
+            gap: '0.5vh',
+            padding: '1vh',
+            borderRadius: '1vw',
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            position: 'absolute',
+            bottom: '0vw',
+        }}> 
+        {listOfCharacters.map((character) => (
+          <div
+            key={character.id}
+            style={{
+                width: "10vw",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "3vh",
+                cursor: "pointer"
+            }}
+            onClick={() => handleSelectCharacter(character)}
+            onMouseEnter={() => setHoveredCharacter(character.id)}
+            onMouseLeave={() => setHoveredCharacter(null)}
+          >
+          <Image
+              alt="Picture of the selectable character"
+              className="character-img"
+              src={character.img}
+              width={250}
+              height={350}
+              style={{
+                borderRadius: "10px",
+                border: `solid 0.5vh ${hoveredCharacter === character.id ? 'lightblue' : 'black'}`,
+                boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                transition: "border-color 0.3s ease",
+              }}
+          />
+          </div>
+        ))};    
+      </div>
     </GameBackground>
-    </>
   );
-}
+};

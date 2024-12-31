@@ -3,11 +3,14 @@ import { resetFlash, setCharacterLife, triggerFlash } from "@/app/Store/models/c
 
 function DamageButton() {
   const dispatch = useAppDispatch();
-  const characterLife = useAppSelector((state) => state.rootReducers.character.characterLife);
+  const { playerCharacter, characterLife } = useAppSelector((state) => state.rootReducers.character);
 
   const applyDamage = (damage: number) => {
-    const newLife = Math.max(characterLife - damage, 0);
-    dispatch(setCharacterLife(newLife));
+    if(playerCharacter){
+      const newLife = Math.max(characterLife - damage, 0);
+
+      dispatch(setCharacterLife(newLife));
+    }
 
     dispatch(triggerFlash());
     setTimeout(() =>  dispatch(resetFlash()), 200);
