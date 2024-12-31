@@ -13,6 +13,7 @@ interface GameState {
   enemiesInScreen: EnemyInterface[];
   enemySelected: EnemyInterface | null; 
   selectedCard: CardInterface | null;
+  ladderStep: number
 }
 
 const initialState: GameState = {
@@ -24,7 +25,8 @@ const initialState: GameState = {
   enemiesHoster: [],
   enemiesInScreen: [],
   enemySelected: null,
-  selectedCard: null
+  selectedCard: null,
+  ladderStep: 0
 };
 
 const gameSlice = createSlice({
@@ -58,6 +60,9 @@ const gameSlice = createSlice({
     setSelectedCard: (state, action: PayloadAction<CardInterface | null>) => {
       state.selectedCard = action.payload;
     },
+    setLadderStep: (state, action: PayloadAction<number>) => {
+      state.ladderStep = action.payload;
+    },
   },
 });
 
@@ -71,6 +76,7 @@ export const {
   setPlayerGrave,
   setPlayerHand,
   setSelectedCard,
+  setLadderStep
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

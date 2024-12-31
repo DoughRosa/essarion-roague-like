@@ -31,7 +31,7 @@ export default function CharacterSelectionPage() {
     
     dispatch(setPlayerDeck(deck));
 
-    window.open("/act-1");
+    window.open("/path", "_self");
   };
 
   return (
