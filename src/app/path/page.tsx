@@ -3,19 +3,15 @@
 import GameBackground from '../Components/GameArea/GameBackground';
 import Image from 'next/image';
 import PathImg from '../Components/Paths/Paths';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../Store/hooks';
-import { setLadderStep } from '../Store/models/gameSlice';
+import { useAppSelector } from '../Store/hooks';
 
 export default function CharacterSelectionPage() {
-  const dispatch = useAppDispatch();
-  const ladderStep = useAppSelector((state) => state.rootReducers.game.ladderStep);
-
-  useEffect(() => {
-    dispatch(setLadderStep(0));
-  }, [dispatch]);
   
+  const ladderStep = useAppSelector(
+    (state) => state.rootReducers.game.ladderStep
+  );
 
+  
   return (
     <GameBackground>
       <div style={{

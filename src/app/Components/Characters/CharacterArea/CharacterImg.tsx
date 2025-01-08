@@ -2,9 +2,6 @@ import { useAppSelector } from "@/app/Store/hooks";
 import { Image } from "@nextui-org/react";
 import HealthBar from "./HealthBar";
 import React from "react";
-import CardInterface from "@/app/Interfaces/CardInterface";
-import allCards from "../../Cards/AllCards";
-import { playCard } from "@/app/Functions/GameFunctions/PlayCardFunction";
 
 export default function CharacterImg() {
   const isFlashing = useAppSelector((state) => state.rootReducers.character.isFlashing);
@@ -12,21 +9,7 @@ export default function CharacterImg() {
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   }
-
-  console.log(playerCharacter)
-  const handleDrop = (e: React.DragEvent, card: CardInterface) => {
-    const cardName = e.dataTransfer.getData("name");
-    const cardToPlay = allCards.findIndex((playableCard) => playableCard.name === cardName);
-
-    if (cardToPlay !== -1) {
-      playCard(card)
-
-    } else {
-      console.log("socorro")
-    }
-  }
   
-  console.log(playerCharacter)
   return (
     <div
     style={{
@@ -43,7 +26,6 @@ export default function CharacterImg() {
         src={playerCharacter?.img}
         width={250}
         onDragOver={handleDragOver}
-        onDrop={() => handleDrop}
         style={{
           borderRadius: "10px",
           border: `solid 0.5vh black`,

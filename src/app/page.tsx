@@ -7,15 +7,17 @@ import listOfCharacters from './Components/Characters/ListOfCharacters';
 import Image from 'next/image';
 import GameBackground from './Components/GameArea/GameBackground';
 import { useState } from 'react';
-import { handdleDeck } from './Functions/GameFunctions/DeckManipulation';
-import { setPlayerDeck } from './Store/models/gameSlice';
+import { handleDeck } from './Functions/GameFunctions/DeckManipulation';
+import { setLadderStep, setPlayerDeck, setPlayerInitialDeck } from './Store/models/gameSlice';
 
 export default function CharacterSelectionPage() {
   const dispatch = useAppDispatch();
   const [hoveredCharacter, setHoveredCharacter] = useState<number | null>(null);
 
+  dispatch(setLadderStep(0));
+
   const {
-      playerDeck,
+      playerDeck
     } = useAppSelector((state) => state.rootReducers.game);
 
     const {
@@ -25,11 +27,12 @@ export default function CharacterSelectionPage() {
   const handleSelectCharacter = (character: CharacterInterface) => {
     dispatch(setPlayerCharacter(character));
     dispatch(setCharacterImg(character.img));
-    dispatch(setCharacterLife(characterMaxLife))
+    dispatch(setCharacterLife(characterMaxLife));
 
-    const deck = handdleDeck(playerDeck);
+    const deck = handleDeck(playerDeck);
     
     dispatch(setPlayerDeck(deck));
+    dispatch(setPlayerInitialDeck(deck));
 
     window.open("/path", "_self");
   };

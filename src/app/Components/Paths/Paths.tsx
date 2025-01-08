@@ -3,10 +3,21 @@ import { Image } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import listOfPathways from "./../Paths/AllPathways";
+import { useAppDispatch, useAppSelector } from "@/app/Store/hooks";
+import { setLadderStep, setPlayerDeck, setPlayerHand } from "@/app/Store/models/gameSlice";
+import { enemies } from "../Enemies/BasicEnemies";
+import { setEnemyImg, setEnemyInScreen, setEnemyLife, setEnemyMaxLife } from "@/app/Store/models/enemiesSlice";
+import { draw5Cards } from "@/app/Functions/GameFunctions/DeckManipulation";
 
 export default function PathImg() {
   const [hoveredPathway, setHoveredPathway] = useState<string | null>(null);
   const [pathways, setPathways] = useState<PathwayInterface[]>([]);
+  const ladderStep = useAppSelector((state) => state.rootReducers.game.ladderStep);
+  const dispatch = useAppDispatch();
+  const { playerDeck, playerHand } = useAppSelector(
+    (state) => state.rootReducers.game
+  );
+
 
   function getRandomPathways(): PathwayInterface[] {
     const weights: Record<number, number> = {
@@ -40,6 +51,16 @@ export default function PathImg() {
     setPathways(getRandomPathways());
   }, []);
 
+  useEffect( () => {
+    const selectedEnemy = enemies.find((selected) => selected.value === ladderStep);
+    
+    if (selectedEnemy) {
+      dispatch(setEnemyInScreen(selectedEnemy));
+      dispatch(setEnemyLife(selectedEnemy.currentLife));
+      dispatch(setEnemyMaxLife(selectedEnemy.initialLife));
+      dispatch(setEnemyImg(selectedEnemy.img));
+    }
+  }, [ladderStep, dispatch]);
 
   return (
     <div
@@ -57,17 +78,25 @@ export default function PathImg() {
         style={{
             width: "10vw",
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             fontSize: "3vh",
-            cursor: "pointer"
+            fontWeight: "bold",
+            textShadow: "-2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black",
+            cursor: "pointer",
+            color: "whitesmoke"
         }}>
+        {paths.name}
         <Image
           alt="Picture of the pathway"
           className="Pathway"
           src={paths.img}
           width={250}
-          onClick={()=> window.open(`${paths.path}`, "_self")}
+          onClick={()=> {
+            dispatch(setLadderStep(ladderStep + 1));
+            window.open(`${paths.path}`, "_self");
+          }}
           onMouseEnter={() => setHoveredPathway(paths.id)}
           onMouseLeave={() => setHoveredPathway(null)}
           style={{

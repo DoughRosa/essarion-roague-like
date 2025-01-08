@@ -1,24 +1,84 @@
-import { useAppSelector } from "@/app/Store/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/Store/hooks";
 import { Image } from "@nextui-org/react";
-import EnemiesHealthBar from "./EnemiesHealthBar";
+import { useEffect, useState } from "react";
 
 export default function EnemiesImg() {
+  const enemy = useAppSelector((state) => state.rootReducers.enemies);
+  let display = ''
   
+  if (enemy.currentLife === 0) {
+    display = "none"
+  } else {
+    display = "flex"
+  }
+
   return (
     <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      margin: '2vh',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-      <Image
-        alt="Pictures of the enemies"
-        src="/Enemies/Esqueletico.png"
-        width={150}
-      />
-      <EnemiesHealthBar/>
+      style={{
+        display: display,
+        margin: "2vh",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        gap: "5vh",
+      }}
+    >
+     <div
+        key={enemy?.currentLife}
+        style={{
+          marginBottom: "2vh",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        <div style={{ position: "relative" }}>
+          <Image
+            alt={`Picture of ${enemy?.img}`}
+            src={`/Enemies/${enemy?.img}`}
+            width={260}
+            height={360}
+            />
+            <div
+              className="fullEnemyBar"
+              style={{
+                position: "relative",
+                backgroundColor: "gray",
+                height: "2vh",
+                width: `14vw`,
+                borderRadius: "1vh",
+                overflow: "hidden",
+                marginTop: "1vh",
+              }}
+            >
+              <div
+                style={{
+                  width: `${enemy?.currentLife && enemy.initialLife ? 
+                    (enemy?.currentLife / enemy?.initialLife) * 100 : 20}%`,
+                  backgroundColor: "#CBC3E3",
+                  height: "100%",
+                  borderRadius: "1vh",
+                  transition: "width 0.3s ease",
+                }}
+              ></div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontWeight: "bolder",
+                  fontSize: "1.5vh",
+                }}
+              >
+                {enemy?.currentLife}/{enemy?.initialLife}
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   );
 }

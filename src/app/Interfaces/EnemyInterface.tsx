@@ -9,6 +9,10 @@ interface EnemyInterface {
     initialPower: number,
     currentPower: number,
     text: '',
+    value: number, 
+    isEnemyFlashing: false,
+    height: number,
+    width: number 
 }
 
 export default EnemyInterface;

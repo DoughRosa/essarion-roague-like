@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface GameState {
   playerDeck: CardInterface[];
+  playerInitialDeck: CardInterface[];
   playerHand: CardInterface[];
   playerGrave: CardInterface[];
   playerEarnedCard: CardInterface[];
@@ -18,6 +19,7 @@ interface GameState {
 
 const initialState: GameState = {
   playerDeck: [],
+  playerInitialDeck: [],
   playerHand: [],
   playerGrave: [],
   playerEarnedCard: [],
@@ -35,6 +37,9 @@ const gameSlice = createSlice({
   reducers: {
     setPlayerDeck: (state, action: PayloadAction<CardInterface[]>) => {
       state.playerDeck = action.payload;
+    },
+    setPlayerInitialDeck: (state, action: PayloadAction<CardInterface[]>) => {
+      state.playerInitialDeck = action.payload;
     },
     setPlayerHand: (state, action: PayloadAction<CardInterface[]>) => {
       state.playerHand = action.payload;
@@ -72,6 +77,7 @@ export const {
   setEnemiesInScreen,
   setEnemySelected,
   setPlayerDeck,
+  setPlayerInitialDeck,
   setPlayerEarnedCard,
   setPlayerGrave,
   setPlayerHand,
