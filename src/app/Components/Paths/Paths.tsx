@@ -4,19 +4,14 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import listOfPathways from "./../Paths/AllPathways";
 import { useAppDispatch, useAppSelector } from "@/app/Store/hooks";
-import { setLadderStep, setPlayerDeck, setPlayerHand } from "@/app/Store/models/gameSlice";
 import { enemies } from "../Enemies/BasicEnemies";
-import { setEnemyImg, setEnemyInScreen, setEnemyLife, setEnemyMaxLife } from "@/app/Store/models/enemiesSlice";
-import { draw5Cards } from "@/app/Functions/GameFunctions/DeckManipulation";
+import { setEnemyImg, setEnemyInScreen, setEnemyLife, setEnemyMaxLife, setEnemyPower } from "@/app/Store/models/enemiesSlice";
 
 export default function PathImg() {
   const [hoveredPathway, setHoveredPathway] = useState<string | null>(null);
   const [pathways, setPathways] = useState<PathwayInterface[]>([]);
   const ladderStep = useAppSelector((state) => state.rootReducers.game.ladderStep);
   const dispatch = useAppDispatch();
-  const { playerDeck, playerHand } = useAppSelector(
-    (state) => state.rootReducers.game
-  );
 
 
   function getRandomPathways(): PathwayInterface[] {
@@ -59,6 +54,8 @@ export default function PathImg() {
       dispatch(setEnemyLife(selectedEnemy.currentLife));
       dispatch(setEnemyMaxLife(selectedEnemy.initialLife));
       dispatch(setEnemyImg(selectedEnemy.img));
+      dispatch(setEnemyPower(selectedEnemy.currentPower));
+
     }
   }, [ladderStep, dispatch]);
 
@@ -94,7 +91,6 @@ export default function PathImg() {
           src={paths.img}
           width={250}
           onClick={()=> {
-            dispatch(setLadderStep(ladderStep + 1));
             window.open(`${paths.path}`, "_self");
           }}
           onMouseEnter={() => setHoveredPathway(paths.id)}

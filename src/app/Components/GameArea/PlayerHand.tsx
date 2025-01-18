@@ -43,7 +43,6 @@ function PlayerHand(){
                 <CardComponent 
                 card={card} 
                 key={card.id}
-                index={index}
                 ></CardComponent>
             </div>
             ))}

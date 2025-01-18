@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useDispatch } from "react-redux";
 import { setPlayerHand } from "../Store/models/gameSlice";
@@ -11,7 +11,7 @@ import {
 } from "../Store/models/characterSlice";
 import RestButtons from "../Components/GameArea/Buttons/RestButtons";
 import { useAppSelector } from "../Store/hooks";
-import { DeckModal } from "../Components/Modals/DeckModal";
+import { MerchantModal } from "../Components/Modals/MerchantModal";
 
 export default function CharacterSelectionPage() {
   const dispatch = useDispatch();
@@ -42,19 +42,19 @@ export default function CharacterSelectionPage() {
       }}
     >
       <RestButtons
-        label="Recuperar 10 de vida"
+        label="Recuperar 5 de vida"
         action={() => {
-          dispatch(setCharacterLife(characterLife + 10));
+          dispatch(setCharacterLife(characterLife + 5));
           window.open("/path", "_self");
         }}
       />
       <RestButtons
-        label="Remover uma carta"
+        label="Add uma carta no deck"
         action={() => {
           setModalOpen(true);
         }}
       />
-      {isModalOpen && <DeckModal/>}
+      {isModalOpen && <MerchantModal />}
     </div>
   );
 }

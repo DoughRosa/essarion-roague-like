@@ -8,16 +8,14 @@ import PlayerDeck from "../Components/GameArea/PlayerDeck";
 import PlayerGrave from "../Components/GameArea/PlayerGrave";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import { useEffect, useState } from "react";
-import { discardCardsEndOfTurn, draw1Card, draw5Cards, handleDeck, returnGraveToDeck } from "../Functions/GameFunctions/DeckManipulation";
-import { setPlayerDeck, setPlayerGrave, setPlayerHand } from "../Store/models/gameSlice";
+import { discardCardsEndOfTurn, draw1Card, draw5Cards, returnGraveToDeck } from "../Functions/GameFunctions/DeckManipulation";
+import { setLadderStep, setPlayerDeck, setPlayerGrave, setPlayerHand } from "../Store/models/gameSlice";
 import EndOfTurnButton from "../Components/GameArea/Buttons/EndOfTurn";
 import CharacterImg from "../Components/Characters/CharacterArea/CharacterImg";
-import DamageButton from "../Components/GameArea/Buttons/DMG";
 import Energy from "../Components/Characters/CharacterArea/Energy";
 import Shield from "../Components/Characters/CharacterArea/Shield";
 import EnemiesImg from "../Components/Enemies/EnemiesArea/EnemiesImg";
-import DamageEnemyButton from "../Components/GameArea/Buttons/DMGenemy";
-import { setCharacterEnergy, setCharacterPower, setCharacterShield } from "../Store/models/characterSlice";
+import { resetFlash, setCharacterEnergy, setCharacterLife, setCharacterPower, setCharacterShield, triggerFlash } from "../Store/models/characterSlice";
 import Power from "../Components/Characters/CharacterArea/Power";
 
 export default function Fight() {
@@ -31,7 +29,13 @@ export default function Fight() {
 
   const energy = useAppSelector((state) => state.rootReducers.character.characterMaxEnergy);
   const characterLife = useAppSelector((state) => state.rootReducers.character.characterLife);
-
+  const enemyLife = useAppSelector((state) => state.rootReducers.enemies.currentLife);
+  const playerCharacter = useAppSelector((state) => state.rootReducers.character);
+  const enemyPower = useAppSelector((state) => state.rootReducers.enemies.currentPower);
+  const currentLife = useAppSelector((state) => state.rootReducers.character.characterLife);
+  const currentShield = useAppSelector((state) => state.rootReducers.character.characterShield);
+  let ladderStep = useAppSelector((state) => state.rootReducers.game.ladderStep);
+ 
   useEffect(() => {    
     const { updatedDeck, newHand } = draw5Cards(playerDeck, playerHand);
 
@@ -50,7 +54,6 @@ export default function Fight() {
     let currentDeck = playerDeck;
     let currentGrave = updatedGrave;
 
-
     while(currentHand.length < 5){
       if(currentDeck.length === 0){
         const { newGrave, newDeck } = returnGraveToDeck(currentGrave, []);
@@ -62,6 +65,16 @@ export default function Fight() {
       currentDeck = updatedDeck;
       currentHand = updatedHand;
     }
+    
+      if(playerCharacter){
+        const damage = Math.max(enemyPower - currentShield, 0);
+        const newLife = Math.max(currentLife - damage, 0);
+    
+        dispatch(setCharacterLife(newLife));
+      }
+    
+        dispatch(triggerFlash());
+        setTimeout(() =>  dispatch(resetFlash()), 200);
 
     dispatch(setPlayerDeck(currentDeck));
     dispatch(setPlayerHand(currentHand));
@@ -77,11 +90,25 @@ export default function Fight() {
     }
   }, [characterLife]);
 
+  useEffect(() => {
+    if (enemyLife <= 0){
+      let newDeck = [...playerDeck, ...playerHand, ...playerGrave];
+
+      dispatch(setPlayerDeck(newDeck));
+      dispatch(setPlayerGrave([]));
+      dispatch(setPlayerHand([]));
+      dispatch(setCharacterEnergy(3));
+      dispatch(setCharacterShield(0));
+      dispatch(setCharacterPower(0));
+      dispatch(setLadderStep(ladderStep + 1));
+
+      window.open("/merchant", "_self");
+    }
+  }, [enemyLife]);
+
   return (
     <>
       <GameBackground>
-        <DamageButton></DamageButton>
-        <DamageEnemyButton></DamageEnemyButton>
         <PlayerCharacter>
           <CharacterImg></CharacterImg>
         </PlayerCharacter>

@@ -1,10 +1,9 @@
 import CardInterface from "@/app/Interfaces/CardInterface";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/app/Store/hooks';
 import { setEnemyLife, setEnemyShield } from '@/app/Store/models/enemiesSlice';
 import { setCharacterEnergy, setCharacterLife, setCharacterShield } from "@/app/Store/models/characterSlice";
-import PlayerHand from "../GameArea/PlayerHand";
 import { setPlayerGrave, setPlayerHand } from "@/app/Store/models/gameSlice";
 
 interface CardProps {
@@ -15,6 +14,7 @@ export default function CardComponent({ card }: CardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
   const playerCharacter = useAppSelector((state) => state.rootReducers.character);
+  const playerLife = useAppSelector((state) => state.rootReducers.character.characterLife);
   const energy = useAppSelector((state) => state.rootReducers.character);
   const enemy = useAppSelector((state) => state.rootReducers.enemies);
   const { playerHand, playerGrave } = useAppSelector((state) => state.rootReducers.game);
@@ -52,10 +52,6 @@ export default function CardComponent({ card }: CardProps) {
     dispatch(setPlayerHand(newHand));
   }
 
-  console.log(playerCharacter)
-  console.log(card.block)
-  console.log(playerCharacter.characterShield)
-
   const playCard = (card: CardInterface) => {
     if (!playerCharacter) return;
 
@@ -88,8 +84,6 @@ export default function CardComponent({ card }: CardProps) {
         case "Lâmina Dupla":
           dealDmg(card);
 
-          dealDmg(card);
-
           discardToGrave(card);
           break;
         case "Muralha de Pedra":
@@ -115,13 +109,16 @@ export default function CardComponent({ card }: CardProps) {
 
           break;
         case "Cura Rápida":
-          setCharacterLife(playerCharacter.characterLife + 5);
+          const newLife = Math.min(playerLife + 4, 40);
+        
+          dispatch(setCharacterLife(newLife));
 
           discardToGrave(card);
           break;
-        case "Soco Veloz":
-          dealDmg(card);
+        case "Surto de energia":
+          dispatch(setCharacterEnergy(5));
 
+          discardToGrave(card);
           break;
         case "Espinhos Reativos":
           dealDmg(card);
@@ -141,7 +138,9 @@ export default function CardComponent({ card }: CardProps) {
           discardToGrave(card);
           break;
         case "Chama Curativa":
-          setCharacterLife(playerCharacter.characterLife + 10);
+          const life = Math.min(playerLife + 10, 40);
+        
+          dispatch(setCharacterLife(life));
 
           discardToGrave(card);
           break;
@@ -216,5 +215,5 @@ export default function CardComponent({ card }: CardProps) {
         {card.text}
       </div>
     </div>
-  );
+  )
 }

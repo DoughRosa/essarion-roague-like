@@ -2,7 +2,7 @@
 
 import { useDispatch } from "react-redux";
 import TryAgainButton from "../Components/GameArea/Buttons/TryAgain";
-import { setPlayerDeck, setPlayerHand } from "../Store/models/gameSlice";
+import { setPlayerDeck, setPlayerGrave, setPlayerHand } from "../Store/models/gameSlice";
 import { useEffect } from "react";
 import { setCharacterEnergy, setCharacterPower, setCharacterShield } from "../Store/models/characterSlice";
 
@@ -12,6 +12,7 @@ export default function CharacterSelectionPage() {
       useEffect(() => {
         dispatch(setPlayerHand([]));
         dispatch(setPlayerDeck([]));
+        dispatch(setPlayerGrave([]));
         dispatch(setCharacterEnergy(3));
         dispatch(setCharacterPower(0));
         dispatch(setCharacterShield(0));

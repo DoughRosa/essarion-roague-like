@@ -1,7 +1,5 @@
-import PlayerDeck from "@/app/Components/GameArea/PlayerDeck";
 import playerInitialDeck from "../../Components/Decks/PlayerInitialDeck";
 import CardInterface from "../../Interfaces/CardInterface";
-import { setPlayerDeck } from "@/app/Store/models/gameSlice";
 
 export const deckShuffler = (deck: CardInterface[]) => {
   const shuffledDeck = [...deck];

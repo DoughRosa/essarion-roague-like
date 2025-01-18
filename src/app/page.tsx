@@ -14,7 +14,7 @@ export default function CharacterSelectionPage() {
   const dispatch = useAppDispatch();
   const [hoveredCharacter, setHoveredCharacter] = useState<number | null>(null);
 
-  dispatch(setLadderStep(0));
+  dispatch(setLadderStep(1));
 
   const {
       playerDeck
